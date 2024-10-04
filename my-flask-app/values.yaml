@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: python
-  tag: "3.9-slim"
+  tag: "alpine3.20"
   pullPolicy: IfNotPresent
 
 ingress:
