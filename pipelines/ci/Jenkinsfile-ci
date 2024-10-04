@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'seograth/app-kube'
+        DOCKER_IMAGE = 'seograth/python-app'
     }
 
     stages {
