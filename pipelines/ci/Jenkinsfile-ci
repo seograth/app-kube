@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'seograth/app-kube'
-        // VERSION_TAG = 'latest'
     }
 
     stages {
@@ -15,17 +14,26 @@ pipeline {
         stage('Pull Git Commit Hash') {
             steps {
                 script {
-                    // Capture the Git commit hash using 'sh' and assign it to an environment variable
                     env.VERSION_TAG = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     echo "Git Commit Hash: ${env.VERSION_TAG}"
                 }
             }
         }
-         stage('Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 sh '''
                     docker build -t ${DOCKER_IMAGE}:${VERSION_TAG} .
                 '''
+            }
+        }
+        stage('Scan Docker Image for Vulnerabilities') {
+            steps {
+                script {
+                    // You can integrate Trivy or other scanning tools here
+                    sh """
+                        trivy image ${DOCKER_IMAGE}:${VERSION_TAG} || echo 'Vulnerability scan failed or found issues!'
+                    """
+                }
             }
         }
         stage('Push Docker Image') {
@@ -34,6 +42,7 @@ pipeline {
                     sh '''
                         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                         docker push ${DOCKER_IMAGE}:${VERSION_TAG}
+                        docker logout
                     '''
                 }
             }
@@ -41,14 +50,14 @@ pipeline {
     }
 
     post {
-        success {
-            build job: 'fastApi-cd', parameters: [
-                string(name: 'DOCKER_IMAGE', value: "${DOCKER_IMAGE}"),
-                string(name: 'VERSION_TAG', value: "${VERSION_TAG}")
-            ]
+         success {
+            echo "Docker image ${DOCKER_IMAGE}:${VERSION_TAG} pushed successfully!"
         }
-
+        failure {
+            echo "Pipeline failed. Check logs for details."
+        }
         always {
+            cleanWs()  // Clean up the workspace after the build
         }
     }
 }
