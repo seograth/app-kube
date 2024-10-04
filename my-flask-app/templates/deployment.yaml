@@ -14,7 +14,7 @@ spec:
       labels:
         app: {{ include "my-flask-app.name" . }}
     spec:
-       serviceAccountName: {{ include "my-flask-app.serviceAccountName" . }}
+      serviceAccountName: {{ include "my-flask-app.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
