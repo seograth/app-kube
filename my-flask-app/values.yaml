@@ -2,10 +2,8 @@ replicaCount: 1
 
 image:
   repository: python
-  tag: "alpine3.19"
+  tag: "alpine3.20"
   pullPolicy: IfNotPresent
-
-command: ["flask", "run", "--host=0.0.0.0", "--port=80"]
 
 ingress:
   enabled: true
@@ -22,12 +20,17 @@ fullnameOverride: ""
 
 serviceAccount:
   create: true
-  # Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
   name: ""
 
 service:
   type: ClusterIP
   port: 80
+
+# Specify the command to run the Flask app
+command:
+  - "flask"
+args:
+  - "run"
+  - "--host=0.0.0.0"
+  - "--port=80"

@@ -31,3 +31,5 @@ spec:
             httpGet:
               path: /
               port: http
+          command: {{ .Values.command | toJson }}
+          args: {{ .Values.args | toJson }}
