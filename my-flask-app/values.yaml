@@ -15,9 +15,6 @@ ingress:
         - path: /
           pathType: Prefix
 
-nameOverride: ""
-fullnameOverride: ""
-
 serviceAccount:
   create: true
   annotations: {}
@@ -26,11 +23,3 @@ serviceAccount:
 service:
   type: ClusterIP
   port: 80
-
-# Specify the command to run the Flask app
-command:
-  - "flask"
-args:
-  - "run"
-  - "--host=0.0.0.0"
-  - "--port=80"

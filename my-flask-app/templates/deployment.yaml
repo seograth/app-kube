@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "my-flask-app.fullname" . }}
-  labels:
-    app: {{ include "my-flask-app.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -14,15 +12,18 @@ spec:
       labels:
         app: {{ include "my-flask-app.name" . }}
     spec:
-      serviceAccountName: {{ include "my-flask-app.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "python:3.10-slim"  # Using a lightweight Python image
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 80
-              protocol: TCP
-          # Command to start the Flask app
-          command: ["flask"]
-          args: ["run", "--host=0.0.0.0", "--port=80"]
+          volumeMounts:
+            - name: flask-app-volume
+              mountPath: /app  # Mount it to the working directory
+          command: ["python", "/app/app.py"]  # Command to run your Flask app
+      volumes:
+        - name: flask-app-volume
+          configMap:
+            name: flask-app-config
