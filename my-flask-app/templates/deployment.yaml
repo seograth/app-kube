@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: { { include "my-flask-app.fullname" . } }
+  name: {{ include "my-flask-app.fullname" . }}
   labels:
-    app: { { include "my-flask-app.name" . } }
+    app: {{ include "my-flask-app.name" . }}
 spec:
-  replicas: { { .Values.replicaCount } }
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: { { include "my-flask-app.name" . } }
+      app: {{ include "my-flask-app.name" . }}
   template:
     metadata:
       labels:
-        app: { { include "my-flask-app.name" . } }
+        app: {{ include "my-flask-app.name" . }}
     spec:
-      serviceAccountName: { { include "my-flask-app.serviceAccountName" . } }
+      serviceAccountName: {{ include "my-flask-app.serviceAccountName" . }}
       containers:
-        - name: { { .Chart.Name } }
+        - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: { { .Values.image.pullPolicy } }
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 80
