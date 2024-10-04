@@ -6,7 +6,7 @@ image:
   pullPolicy: IfNotPresent
 
 ingress:
-  enabled: false
+  enabled: true
   className: ""
   annotations: {}
   hosts:
