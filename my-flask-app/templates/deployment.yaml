@@ -23,13 +23,6 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          command: {{ .Values.command | toJson }}
-          args: {{ .Values.args | toJson }}
+          # Command to start the Flask app
+          command: ["flask"]
+          args: ["run", "--host=0.0.0.0", "--port=80"]
