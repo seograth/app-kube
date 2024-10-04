@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: tiangolo/uwsgi-nginx-flask:python3.8
+  repository: tiangolo/python3.9
   tag: "latest"
   pullPolicy: IfNotPresent
 
