@@ -12,11 +12,11 @@ metadata:
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
-    - host: {{ .Values.ingress.hosts | first | quote }}  # Using first to get the first item
+    - host: {{ index .Values.ingress.hosts 0 "host" | quote }}  # Accessing host correctly
       http:
         paths:
-          - path: {{ index .Values.ingress.hosts 0.paths 0.path | quote }}  # Access path with index
-            pathType: {{ index .Values.ingress.hosts 0.paths 0.pathType | quote }}  # Access pathType with index
+          - path: {{ index (index .Values.ingress.hosts 0 "paths") 0 "path" | quote }}  # Accessing path correctly
+            pathType: {{ index (index .Values.ingress.hosts 0 "paths") 0 "pathType" | quote }}  # Accessing pathType correctly
             backend:
               service:
                 name: {{ include "my-flask-app.fullname" . }}
