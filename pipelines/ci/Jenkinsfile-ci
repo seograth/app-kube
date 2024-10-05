@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent kubernetes
 
     environment {
         DOCKER_IMAGE = 'seograth/python-app'
