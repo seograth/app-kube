@@ -16,14 +16,18 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: "python:3.9-slim"  # Use the official Python image
-        command: [ "python", "/app/app.py" ]  # Run the Flask app
+        image: "python:3.9-slim"  # Using the official Python image
+        command: ["/bin/sh", "-c"] # Use shell to run multiple commands
+        args:
+          - |
+            pip install -r /app/requirements.txt &&  # Install dependencies
+            python /app/app.py  # Run the Flask app
         volumeMounts:
-        - name: flask-app-code   # Referencing the correct volume by name
+        - name: flask-app-code   # Reference the correct volume
           mountPath: /app        # Mount the ConfigMap at /app path
         ports:
         - containerPort: 5000
-      volumes:                    # Ensure the volume is defined properly
+      volumes:
       - name: flask-app-code
         configMap:
           name: my-flask-app-config   # Reference the correct ConfigMap
