@@ -12,11 +12,11 @@ metadata:
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
-    - host: {{ .Values.ingress.hosts[0].host }}
+    - host: {{ .Values.ingress.hosts[0].host | quote }}  # Ensure the host is quoted
       http:
         paths:
-          - path: {{ .Values.ingress.hosts[0].paths[0].path }}
-            pathType: {{ .Values.ingress.hosts[0].paths[0].pathType }}
+          - path: {{ .Values.ingress.hosts[0].paths[0].path | quote }}
+            pathType: {{ .Values.ingress.hosts[0].paths[0].pathType | quote }}  # Ensure pathType is quoted
             backend:
               service:
                 name: {{ include "my-flask-app.fullname" . }}
