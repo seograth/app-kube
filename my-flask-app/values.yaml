@@ -10,4 +10,13 @@ service:
   port: 5000
 
 ingress:
-  enabled: false
+  enabled: true
+  className: "traefik"   # Specify Traefik as the ingress class
+  annotations:
+    traefik.ingress.kubernetes.io/router-entrypoints: "web"  # Traefik HTTP entrypoint
+  hosts:
+    - host: ""  # Replace with your domain
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []

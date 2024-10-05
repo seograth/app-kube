@@ -10,20 +10,16 @@ metadata:
     {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
-  ingressClassName: {{ .Values.ingress.className | default "nginx" | quote }}
+  ingressClassName: {{ .Values.ingress.className }}
   rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .Values.ingress.hosts[0].host }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path | quote }}
-            pathType: {{ .pathType | quote }}
+          - path: {{ .Values.ingress.hosts[0].paths[0].path }}
+            pathType: {{ .Values.ingress.hosts[0].paths[0].pathType }}
             backend:
               service:
-                name: {{ include "my-flask-app.fullname" $ }}
+                name: {{ include "my-flask-app.fullname" . }}
                 port:
-                  number: 80
-          {{- end }}
-    {{- end }}
+                  number: {{ .Values.service.port }}
 {{- end }}

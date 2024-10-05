@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: {{ include "my-flask-app.fullname" . }}
   labels:
-    {{- include "my-flask-app.labels" . | nindent 4 }}
+    app: {{ include "my-flask-app.name" . }}
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: 5000
       protocol: TCP
       name: http
   selector:
-    {{- include "my-flask-app.selectorLabels" . | nindent 4 }}
+    app: {{ include "my-flask-app.name" . }}
