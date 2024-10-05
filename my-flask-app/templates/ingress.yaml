@@ -14,8 +14,8 @@ spec:
     - host: {{ .Values.ingress.host | quote }}  # Accessing host correctly
       http:
         paths:
-          - path: {{ .Values.ingress.path | quote }}  # Accessing path directly
-            pathType: {{ .Values.ingress.pathType | quote }}  # Accessing pathType directly
+          - path: /  # Accessing path directly
+            pathType: Prefix  # Accessing pathType directly
             backend:
               service:
                 name: {{ include "my-flask-app.fullname" . }}
