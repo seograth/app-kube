@@ -10,7 +10,6 @@ metadata:
     {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
   rules:
     - host: {{ index .Values.ingress.hosts 0 "host" | quote }}  # Accessing host correctly
       http:
