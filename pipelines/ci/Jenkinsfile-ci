@@ -3,61 +3,27 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'seograth/python-app'
+        REGISTRY = 'docker.io'                // Docker Hub registry
+        DOCKER_CREDENTIALS_ID = credentials("dockerhub-credentials-id")
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-        stage('Pull Git Commit Hash') {
+        stage('Build') {
             steps {
                 script {
-                    env.VERSION_TAG = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    echo "Git Commit Hash: ${env.VERSION_TAG}"
+                    docker.build(DOCKER_IMAGE)
                 }
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                sh '''
-                    docker build -t ${DOCKER_IMAGE}:${VERSION_TAG} .
-                '''
-            }
-        }
-        stage('Scan Docker Image for Vulnerabilities') {
+        stage('Push') {
             steps {
                 script {
-                    // You can integrate Trivy or other scanning tools here
-                    sh """
-                        trivy image ${DOCKER_IMAGE}:${VERSION_TAG} || echo 'Vulnerability scan failed or found issues!'
-                    """
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
+                        docker.image(DOCKER_IMAGE).push('latest')
+                        // docker.image(DOCKER_IMAGE).push("${env.BUILD_NUMBER}")
+                    }
                 }
             }
-        }
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh '''
-                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                        docker push ${DOCKER_IMAGE}:${VERSION_TAG}
-                        docker logout
-                    '''
-                }
-            }
-        }
-    }
-
-    post {
-         success {
-            echo "Docker image ${DOCKER_IMAGE}:${VERSION_TAG} pushed successfully!"
-        }
-        failure {
-            echo "Pipeline failed. Check logs for details."
-        }
-        always {
-            cleanWs()  // Clean up the workspace after the build
         }
     }
 }
