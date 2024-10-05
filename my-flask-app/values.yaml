@@ -18,6 +18,6 @@ ingress:
   hosts:
     - host: ""  # Replace with your domain
       paths:
-        - path: /
+        - path: /api
           pathType: Prefix
   tls: []
