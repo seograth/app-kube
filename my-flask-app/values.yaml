@@ -1,25 +1,13 @@
 replicaCount: 1
 
 image:
-  repository: tiangolo/uwsgi-nginx-flask
-  tag: "python3.9"
+  repository: python
+  tag: "3.9-slim"
   pullPolicy: IfNotPresent
-
-ingress:
-  enabled: true
-  className: ""
-  annotations: {}
-  hosts:
-    - host: flask-app.local
-      paths:
-        - path: /
-          pathType: Prefix
-
-serviceAccount:
-  create: true
-  annotations: {}
-  name: ""
 
 service:
   type: ClusterIP
-  port: 80
+  port: 5000
+
+ingress:
+  enabled: false
