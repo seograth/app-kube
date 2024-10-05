@@ -25,6 +25,7 @@ pipeline {
                   path: /var/run/docker.sock
             """
         }
+    }
 
     environment {
         DOCKER_IMAGE = 'seograth/python-app'
