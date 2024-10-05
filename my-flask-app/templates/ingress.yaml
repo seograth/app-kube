@@ -11,11 +11,11 @@ metadata:
     {{- end }}
 spec:
   rules:
-    - host: {{ index .Values.ingress.hosts 0 "host" | quote }}  # Accessing host correctly
+    - host: {{ .Values.ingress.host | quote }}  # Accessing host correctly
       http:
         paths:
-          - path: /
-            pathType: Prefix
+          - path: {{ .Values.ingress.path | quote }}  # Accessing path directly
+            pathType: {{ .Values.ingress.pathType | quote }}  # Accessing pathType directly
             backend:
               service:
                 name: {{ include "my-flask-app.fullname" . }}

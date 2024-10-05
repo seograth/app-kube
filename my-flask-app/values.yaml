@@ -14,9 +14,7 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: "traefik"            # Set the ingress class to Traefik
     traefik.ingress.kubernetes.io/router.entrypoints: "web" # Specify entry points for routing
-  hosts:
-    - host: ""  # Replace with your domain
-      paths:
-        - path: /api
-          pathType: Prefix
+  host: ""  # Replace with your domain
+  path: /api
+  pathType: Prefix
   tls: []
