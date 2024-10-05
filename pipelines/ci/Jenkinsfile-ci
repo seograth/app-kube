@@ -1,5 +1,10 @@
 pipeline {
-    agent kubernetes
+    agent {
+        kubernetes {
+            label 'kubernetes-agent'   // Use the label defined in the pod template
+            defaultContainer 'jnlp'    // This specifies the main container in the agent pod
+        }
+    }
 
     environment {
         DOCKER_IMAGE = 'seograth/python-app'
