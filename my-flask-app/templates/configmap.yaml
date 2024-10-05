@@ -1,13 +1,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: my-flask-app-config
+  name: my-flask-app-config   # Ensure this matches the name in the Deployment
 data:
   app.py: |
     from flask import Flask
     app = Flask(__name__)
+    
     @app.route('/')
     def hello():
         return "Hello, World!"
+    
     if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5000)
