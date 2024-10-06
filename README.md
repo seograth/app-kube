@@ -60,3 +60,7 @@ Due to time constraints, there were some elements left incomplete:
 - *Improved Security Posture*: Additional security hardening measures, such as Network Policies and fine-grained Role-Based Access Control (RBAC), were planned but not fully implemented.
 - *Load Testing & Auto-scaling*: The vision included performance and load testing to configure horizontal pod autoscaling for the Flask app and Jenkins based on real-world traffic.
 - *Single source of truth*: Instead of adding the application sources to ArgoCD, a single repo will hold every source, providing us a singe source of truth for our cluster state.
+
+# Now the time we all waited for... *fingers crossed*
+
+https://katikako.gr/
