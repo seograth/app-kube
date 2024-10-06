@@ -13,7 +13,7 @@ ingress:
   enabled: true
   annotations:
     kubernetes.io/ingress.class: "traefik"            # Set the ingress class to Traefik
-    traefik.ingress.kubernetes.io/router.entrypoints: ["web", "websecure"] # Specify entry points for routing
+    traefik.ingress.kubernetes.io/router.entrypoints: ["websecure"] # Specify entry points for routing
   host: ""  # Replace with your domain
   path: /api
   pathType: Prefix
